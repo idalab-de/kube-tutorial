@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-12-19T16:01:50Z",
+  "id": "your-first-kubeflow",
+  "duration": 0,
+  "title": "Your First Kubeflow Notebook at idalab",
+  "authors": "Hong Zhu",
+  "summary": "In this codelab, you'll learn how to start a jupyter notebook server based on Kubeflow, and how to generate a pipeline within a notebook.",
+  "source": "1Y1XW9lMPKPgG6S7nktwyLtojd09lDvUGxWyKhdeguxs/",
+  "theme": "machine-learning",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "Machine Learning"
+  ],
+  "tags": [
+    "kiosk",
+    "web"
+  ],
+  "feedback": "hong.zhu@idalab.de",
+  "url": "your-first-kubeflow"
+}

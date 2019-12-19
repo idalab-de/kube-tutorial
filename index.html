@@ -1,0 +1,78 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Your First Kubeflow Notebook at idalab</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="your-first-kubeflow"
+                  title="Your First Kubeflow Notebook at idalab"
+                  environment="web"
+                  feedback-link="hong.zhu@idalab.de">
+    
+      <google-codelab-step label="Introduction" duration="0">
+        <p class="image-container"><img style="width: 624.50px" src="img/2fe87d8e5ee387a0.png"></p>
+<h2 is-upgraded>Backgrounds</h2>
+<p>As datasets continue to expand and models grow become complex, distributing machine learning workloads across multiple instances is becoming more attractive. Unfortunately, breaking up and distributing a workload can add both computational overhead, and a great deal more complexity to the system. Data scientists should be able to focus on ML problems, not <a href="https://en.wikipedia.org/wiki/DevOps" target="_blank">DevOps</a>. </p>
+<p>Fortunately, distributed workloads are becoming easier to manage, thanks to <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/" target="_blank">Kubernetes</a> .<br>Kubernetes is a mature, production ready platform that gives developers a simple API to deploy programs to a cluster of machines as if they were a single piece of hardware. Using Kubernetes, computational resources can be added or removed as desired, and the same cluster can be used to both train and serve ML models.</p>
+<h2 is-upgraded>What is Kubeflow?</h2>
+<p><a href="https://www.kubeflow.org/docs/about/kubeflow/" target="_blank">Kubeflow</a> is a free and open-source software platform developed by Google and first released in 2018. It is dedicated to making deployments of machine learning workflows on Kubernetes simple, portable and scalable. Kubeflow provides a straightforward way to deploy best-of-breed open-source systems for ML to diverse cloud infrastructures (AWS, GCP, Azure etc.).<br>In short, you could understand Kubeflow as the machine learning toolkit for Kubernetes. Features that are supported by Kubeflow will be introduced in detail in the next Chapter.</p>
+<p>This codelab will serve as an introduction to <a href="http://www.kubeflow.org/" target="_blank">Kubeflow</a>, an open-source project which aims to make running ML workloads on Kubernetes simple, portable and scalable. Kubeflow adds some resources to your cluster to assist with a variety of tasks, including training and serving models and running <a href="http://jupyter.org/" target="_blank">Jupyter Notebooks</a>. It also extends the Kubernetes API by adding new <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/" target="_blank">Custom Resource Definitions (CRDs)</a> to your cluster, so machine learning workloads can be treated as first-class citizens by Kubernetes.</p>
+<h2 is-upgraded>Kubeflow at idalab<img style="width: 624.00px" src="img/e392e0664cd71d7e.png"></h2>
+<p>The picture below presents a rough structure of our Kubeflow deployment at Google Cloud. <br>Each Kubeflow consumer here at idalab will be assigned a <a href="https://cloud.google.com/iam/docs/service-accounts" target="_blank">User Service Account</a> to access to Kubeflow services hosted on the compute engine.</p>
+<p>Now taking notebook server for instance, unlike other systems you may have used in the past, Kubernetes doesn&#39;t run the containerized Jupyterlab directly. Instead the Jupyterlab container will be wrapped together with a <a href="https://istio.io/docs/tasks/traffic-management/egress/http-proxy/" target="_blank">istio-proxy</a> container into a higher-level structure called <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/" target="_blank">pod</a>. Any containers in the same pod will share the same resources and local network. Containers can easily communicate with other containers in the same pod as though they were on the same machine while maintaining a degree of isolation from others. </p>
+<p>Pods are deployed on Nodes. A <a href="https://kubernetes.io/docs/concepts/architecture/nodes/" target="_blank">node</a> is the smallest unit of computing hardware in Kubernetes. It is a representation of a single machine in the cluster. In our case, they are the virtual machines hosted on the cloud provider <a href="https://cloud.google.com/" target="_blank">Google Cloud Platform</a>. </p>
+<p>Because programs running on our cluster aren&#39;t guaranteed to run on a specific node, data can&#39;t be saved to any arbitrary place in the file system. If a program tries to save data to a file for later, but is then relocated onto a new node, the file will no longer be where the program expects it to be. For this reason, the traditional local storage associated to each node is treated as a temporary cache to hold programs, but any data saved locally can not be expected to persist. Therefore, to store data permanently, Kubernetes uses <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Persistent Volumes</a>. In our project, we use <a href="https://cloud.google.com/filestore/" target="_blank">Google Cloud Filestore</a> to be attached to the cluster as persistent volumes. This can be thought of as plugging an external hard drive in to the cluster. Persistent Volumes provide a file system that can be mounted to the cluster, without being associated with any particular node.<br><br><a href="https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16" target="_blank">https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting Started" duration="0">
+        <p>Magic Link: <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a></p>
+<h2 is-upgraded>Managing Namespace Contributors </h2>
+<p>Kubeflow allows you to share your profiles with other users in the system. An owner of a profile can share access to their profile using the <strong>Manage Contributors</strong> tab available through the dashboard. </p>
+<p>Below is an example of the manage contributors tab view, to add and remove contributors is easily possible by simply adding/removing the user identifier (<strong>idalab user email address</strong>) in the <strong>Contributors</strong> to your namespace field. Once added, the Manage Contributors tab will show the profiles with their corresponding contributors listed. </p>
+<p class="image-container"><img style="width: 624.00px" src="img/920357581d6dad5c.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/bafba371ba3b84db.png"></p>
+<p>The contributors will have access to all the Kubernetes resources in the namespace and will be able to create notebook servers as well as access existing notebooks. The contributor&#39;s access can be removed by the owner of a profile by visiting the manage contributors tab and removing the user email/id from the list of contributors.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Run a Pipeline from inside Your Notebook" duration="0">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Congratulations" duration="0">
+        <p>Your Feedback is very important to us to make it better: <a href="https://forms.gle/ARdrjNxesNnzhcgH8" target="_blank">https://forms.gle/ARdrjNxesNnzhcgH8</a></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
