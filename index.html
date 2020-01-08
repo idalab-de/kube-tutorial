@@ -39,25 +39,85 @@
 <p>The picture below presents a rough structure of our Kubeflow deployment at Google Cloud. <br>Each Kubeflow consumer here at idalab will be assigned a <a href="https://cloud.google.com/iam/docs/service-accounts" target="_blank">User Service Account</a> to access to Kubeflow services hosted on the compute engine.</p>
 <p>Now taking notebook server for instance, unlike other systems you may have used in the past, Kubernetes doesn&#39;t run the containerized Jupyterlab directly. Instead the Jupyterlab container will be wrapped together with a <a href="https://istio.io/docs/tasks/traffic-management/egress/http-proxy/" target="_blank">istio-proxy</a> container into a higher-level structure called <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/" target="_blank">pod</a>. Any containers in the same pod will share the same resources and local network. Containers can easily communicate with other containers in the same pod as though they were on the same machine while maintaining a degree of isolation from others. </p>
 <p>Pods are deployed on Nodes. A <a href="https://kubernetes.io/docs/concepts/architecture/nodes/" target="_blank">node</a> is the smallest unit of computing hardware in Kubernetes. It is a representation of a single machine in the cluster. In our case, they are the virtual machines hosted on the cloud provider <a href="https://cloud.google.com/" target="_blank">Google Cloud Platform</a>. </p>
-<p>Because programs running on our cluster aren&#39;t guaranteed to run on a specific node, data can&#39;t be saved to any arbitrary place in the file system. If a program tries to save data to a file for later, but is then relocated onto a new node, the file will no longer be where the program expects it to be. For this reason, the traditional local storage associated to each node is treated as a temporary cache to hold programs, but any data saved locally can not be expected to persist. Therefore, to store data permanently, Kubernetes uses <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Persistent Volumes</a>. In our project, we use <a href="https://cloud.google.com/filestore/" target="_blank">Google Cloud Filestore</a> to be attached to the cluster as persistent volumes. This can be thought of as plugging an external hard drive in to the cluster. Persistent Volumes provide a file system that can be mounted to the cluster, without being associated with any particular node.<br><br><a href="https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16" target="_blank">https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16</a></p>
+<p>Because programs running on our cluster aren&#39;t guaranteed to run on a specific node, data can&#39;t be saved to any arbitrary place in the file system. If a program tries to save data to a file for later, but is then relocated onto a new node, the file will no longer be where the program expects it to be. For this reason, the traditional local storage associated to each node is treated as a temporary cache to hold programs, but any data saved locally can not be expected to persist. Therefore, to store data permanently, Kubernetes uses <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Persistent Volumes</a>. In our project, we use <a href="https://cloud.google.com/filestore/" target="_blank">Google Cloud Filestore</a> to be attached to the cluster as persistent volumes. This can be thought of as plugging an external hard drive in to the cluster. Persistent Volumes provide a file system that can be mounted to the cluster, without being associated with any particular node.</p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Getting Started" duration="0">
-        <p>Magic Link: <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a></p>
+        <p>Magic Link: <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a> provides access to the Kubeflow central dashboard.</p>
+<p>If this is your first time to access the UI, you need to first create your personal namespace</p>
+<p><code>Firstname-Lastname</code>. The primary purpose of this functionality is to enable multiple users to operate on a shared Kubeflow deployment without stepping on each others&#39; jobs and resources. For more information see <a href="https://www.kubeflow.org/docs/other-guides/multi-user-overview/" target="_blank">https://www.kubeflow.org/docs/other-guides/multi-user-overview/</a></p>
 <h2 is-upgraded>Managing Namespace Contributors </h2>
 <p>Kubeflow allows you to share your profiles with other users in the system. An owner of a profile can share access to their profile using the <strong>Manage Contributors</strong> tab available through the dashboard. </p>
 <p>Below is an example of the manage contributors tab view, to add and remove contributors is easily possible by simply adding/removing the user identifier (<strong>idalab user email address</strong>) in the <strong>Contributors</strong> to your namespace field. Once added, the Manage Contributors tab will show the profiles with their corresponding contributors listed. </p>
-<p class="image-container"><img style="width: 624.00px" src="img/920357581d6dad5c.png"></p>
-<p class="image-container"><img style="width: 624.00px" src="img/bafba371ba3b84db.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/4fbe05ba7042ae23.png"></p>
 <p>The contributors will have access to all the Kubernetes resources in the namespace and will be able to create notebook servers as well as access existing notebooks. The contributor&#39;s access can be removed by the owner of a profile by visiting the manage contributors tab and removing the user email/id from the list of contributors.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e60dd884f8f5cfe9.png"></p>
+<h2 is-upgraded>Set up Your Notebooks </h2>
+<p>One of the most important services provided by Kubeflow deployment is spawning and managing Jupyter notebooks. You can set up multiple notebook servers under your namespace. Each notebook server is configured by default as a <strong>Jupyterlab server</strong> and can include multiple notebooks. </p>
+<p class="image-container"><img style="width: 624.00px" src="img/53dd9ab22a5a9bc4.png"></p>
+<p>This guide shows you how to set up a notebook server for your Jupyter notebooks in Kubeflow:</p>
+<ol type="1" start="1">
+<li>In your Kubeflow UI, choose the <strong>namespace</strong> corresponding to your Kubeflow profile and click <strong>Notebook Servers</strong> in the left-hand panel <br></li>
+<li>Click <strong>NEW SERVER</strong> to create a notebook server.<br></li>
+<li>Now you should see a page for entering details of your new server. <br>Enter  a <strong>name</strong> of your choice for the notebook server. The name can include letters and numbers, but no spaces. For example, my-first-notebook.<br></li>
+<li>Kubeflow automatically updates the value in the <strong>namespace</strong> field to be the same as the namespace that you selected in a previous step. This ensures that the new notebook server is in a namespace that you can access.<br></li>
+<li>Select a Docker <strong>image</strong> for the baseline deployment of your notebook server. By default, you are using the one customized by idalab <code>gcr.io/idalab-kube/kube-user<br></code></li>
+<li>Specify the total amount of <strong>CPU</strong> that your notebook server should reserve. The default is 0.5. For CPU-intensive jobs, you can choose more than one CPU (for example, 1.5).<br></li>
+<li>Specify the total amount of <strong>memory</strong> (RAM) that your notebook server should reserve. The default is 1.0Gi.<br></li>
+<li>Specify a <strong>workspace volume</strong> to hold your personal workspace for this notebook server. Kubeflow provisions a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Kubernetes persistent volume</a> for your workspace volume. The PV ensures that you can retain data even if you destroy your notebook server. <br>Notice that you need to define your access mode as <code>ReadWriteMany</code> to ensure the usage of Kale (will be explained later), this means that the volume can be mounted as read-write by a single node. <br></li>
+<li>Click <strong>LAUNCH</strong>. You should see an entry for your new notebook server on the <strong>Notebook Servers</strong> page, with a spinning indicator in the <strong>Status</strong> column. It can take a few minutes to set up the notebook server.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/3bceb612f6782eef.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Run a Pipeline from inside Your Notebook" duration="0">
-        
+        <h2 is-upgraded>Introduction to Kubeflow Pipeline (KFP)</h2>
+<p>A machine learning<strong> pipeline</strong> is a description of a machine learning workflow, including all of the components in the workflow and how they combine in the form of a graph.</p>
+<p>As one of the most important features of Kubeflow, the Kubeflow pipeline is a platform for building and deploying portable, scalable machine learning workflows based on Docker containers. </p>
+<p>A pipeline consists of one or multiple <strong>components</strong>. A component is an implementation of a pipeline task, which represents a step in the workflow. Each component takes one or more inputs and may produce one or more outputs. In general, each component consists of </p>
+<ul>
+<li>Interface <br>Input/output specifications (name, id, description, default value, etc).</li>
+<li>Implementation<br>A specification of how to run the component given a set of argument values for the component&#39;s inputs. The implementation section also describes how to get the output values from the component once the component has finished running.</li>
+<li>Metadata<br>Name, description, etc.</li>
+</ul>
+<p class="image-container"><img style="width: 624.00px" src="img/20aaaf27848f111c.png"></p>
+<p>In Kubeflow, each component is packaged as a <a href="https://docs.docker.com/get-started/" target="_blank">Docker image</a> which executes independently. This means the components do not run in the same process and cannot directly share in-memory data. You must <strong>serialize</strong> (to strings or files) all the data pieces that you pass between the components so that the data can travel over the distributed network. You must then <strong>deserialize</strong> the data for use in the downstream component. (Don&#39;t worry, we have the tools for that) </p>
+<h2 is-upgraded>Pipeline Deployment with Kale </h2>
+<p><img style="width: 27.64px" src="img/d8551e21a6994fe7.png">Kale is a Python package that aims at automatically deploy a general purpose Jupyter Notebook as a running <a href="https://github.com/kubeflow/pipelines" target="_blank">Kubeflow Pipelines</a> instance, without requiring the use the specific KFP DSL. </p>
+<p>The general idea of kale is to automatically arrange the cells included in a notebook, and transform them into a unified KFP-compliant pipeline. To do so, the user is only required to decide which cells correspond to which pipeline step, by the use of tags. In this way, a researcher can better focus on building and testing its code locally, and then scale it in a simple, organized and controlled way.</p>
+<p>Kale uses the out-of-the-box tagging feature provided by Jupyter, therefore lets you associate each cells with custom defined tags. The tags are used to tell Kale how to convert the notebook&#39;s code cells into an execution graph, by specifying the execution dependencies between the pipeline steps and which code cells to merge together. </p>
+<p>To specify a notebook code cell, simply click the pencil bottom at the right-hand panel, and you&#39;ll see the following options:</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e817acae0c4e81ec.png"></p>
+<p>Below is a detailed list of tags recognized by Kale:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Imports</p>
+</td><td colspan="1" rowspan="1"><p>Code to be added at the beginning of every pipeline step. This is particularly useful with cells containing import statements</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Functions</p>
+</td><td colspan="1" rowspan="1"><p>Code to be added at the beginning of every pipeline step, but after import statements. This is particularly useful for functions or statements used in multiple pipeline steps</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Pipeline Parameters</p>
+</td><td colspan="1" rowspan="1"><p>To be used in cells that contain just variable assignment of primitive types <code>int, str, float, bool</code>. These variables will be used as pipeline parameters, using the assigned values as defaults</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Pipeline Step</p>
+</td><td colspan="1" rowspan="1"><p>Assign the current cell to a pipeline step. If necessary, define a dependency of the current cell to other pipeline steps</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Skip Cells</p>
+</td><td colspan="1" rowspan="1"><p>Do not include the code of the cell in the pipeline</p>
+</td></tr>
+</table>
+<h2 is-upgraded>Let&#39;s Start</h2>
+<p>Now that you have learned the basic concepts about Kubeflow pipeline and Kale, it&#39;s time to try something by yourself. We prepared an example notebook which shows you how to prepare a pipeline using Kale, upload it to Kubeflow Pipelines, then run it.</p>
+<p>Now go back to your notebook server and open the terminal. Entering the following commands to clone the prepared repository:</p>
+<pre>cd work 
+git clone https://github.com/idalab-de/kube-tutorial.git</pre>
+<p>Navigate to the following directory <code>work/kube-tutorial/pipeline</code>, open the prepared example notebook <code>analytics.ipynb</code>. </p>
+<p>Now you are all set, just follow the instructions there to get your first hands-on experience of Kubeflow pipeline. Have fun! 😎</p>
+
 
       </google-codelab-step>
     
