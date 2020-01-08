@@ -47,7 +47,7 @@
       <google-codelab-step label="Getting Started" duration="0">
         <p>Magic Link: <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a> provides access to the Kubeflow central dashboard.</p>
 <p>If this is your first time to access the UI, you need to first create your personal namespace</p>
-<p><code>Firstname-Lastname</code>. The primary purpose of this functionality is to enable multiple users to operate on a shared Kubeflow deployment without stepping on each others&#39; jobs and resources. For more information see <a href="https://www.kubeflow.org/docs/other-guides/multi-user-overview/" target="_blank">https://www.kubeflow.org/docs/other-guides/multi-user-overview/</a></p>
+<p><strong>firstname-lastname</strong>. The primary purpose of this functionality is to enable multiple users to operate on a shared Kubeflow deployment without stepping on each others&#39; jobs and resources. For more information see <a href="https://www.kubeflow.org/docs/other-guides/multi-user-overview/" target="_blank">https://www.kubeflow.org/docs/other-guides/multi-user-overview/</a></p>
 <h2 is-upgraded>Managing Namespace Contributors </h2>
 <p>Kubeflow allows you to share your profiles with other users in the system. An owner of a profile can share access to their profile using the <strong>Manage Contributors</strong> tab available through the dashboard. </p>
 <p>Below is an example of the manage contributors tab view, to add and remove contributors is easily possible by simply adding/removing the user identifier (<strong>idalab user email address</strong>) in the <strong>Contributors</strong> to your namespace field. Once added, the Manage Contributors tab will show the profiles with their corresponding contributors listed. </p>
@@ -67,9 +67,18 @@
 <li>Specify the total amount of <strong>CPU</strong> that your notebook server should reserve. The default is 0.5. For CPU-intensive jobs, you can choose more than one CPU (for example, 1.5).<br></li>
 <li>Specify the total amount of <strong>memory</strong> (RAM) that your notebook server should reserve. The default is 1.0Gi.<br></li>
 <li>Specify a <strong>workspace volume</strong> to hold your personal workspace for this notebook server. Kubeflow provisions a <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Kubernetes persistent volume</a> for your workspace volume. The PV ensures that you can retain data even if you destroy your notebook server. <br>Notice that you need to define your access mode as <code>ReadWriteMany</code> to ensure the usage of Kale (will be explained later), this means that the volume can be mounted as read-write by a single node. <br></li>
-<li>Click <strong>LAUNCH</strong>. You should see an entry for your new notebook server on the <strong>Notebook Servers</strong> page, with a spinning indicator in the <strong>Status</strong> column. It can take a few minutes to set up the notebook server.</li>
+<li>Click <strong>LAUNCH</strong>. You should see an entry for your new notebook server on the <strong>Notebook Servers</strong> page, with a spinning indicator in the <strong>Status</strong> column. It can take a few minutes to set up the notebook server.<br></li>
+<li>Click <strong>CONNECT</strong> once the launching is done. <br>Notice that you may encounter an <code>upstream connect error</code>, this means the initialization of your container is not finished yet. Simply close the tab and try later.</li>
 </ol>
 <p class="image-container"><img style="width: 624.00px" src="img/3bceb612f6782eef.png"></p>
+<p>The notebook server is initialized with basic ML packages as well as some prepared data science repositories:</p>
+<ul>
+<li>Practical skills<br>This can be taken as a training ground for the competency &#34;Practical skills, tooling &amp; tech understanding&#34;.</li>
+<li>Project template<br>This contains a starting point for a typical idalab project.</li>
+<li>User configs <br>Personal configurations for deployments.</li>
+</ul>
+<p>If you encounter a pop-up window as below, just click OK and everything will be fine. This has something to do with Kale which is still under development. It will be solved in the near future.</p>
+<p class="image-container"><img style="width: 504.50px" src="img/7fb6f1a2599163e2.png"><br></p>
 
 
       </google-codelab-step>
@@ -78,7 +87,8 @@
         <h2 is-upgraded>Introduction to Kubeflow Pipeline (KFP)</h2>
 <p>A machine learning<strong> pipeline</strong> is a description of a machine learning workflow, including all of the components in the workflow and how they combine in the form of a graph.</p>
 <p>As one of the most important features of Kubeflow, the Kubeflow pipeline is a platform for building and deploying portable, scalable machine learning workflows based on Docker containers. </p>
-<p>A pipeline consists of one or multiple <strong>components</strong>. A component is an implementation of a pipeline task, which represents a step in the workflow. Each component takes one or more inputs and may produce one or more outputs. In general, each component consists of </p>
+<p>A pipeline consists of one or multiple <strong>components</strong>. A component is an implementation of a pipeline task, which represents a step in the workflow. Each component takes one or more inputs and may produce one or more outputs. </p>
+<p>In general, each component consists of </p>
 <ul>
 <li>Interface <br>Input/output specifications (name, id, description, default value, etc).</li>
 <li>Implementation<br>A specification of how to run the component given a set of argument values for the component&#39;s inputs. The implementation section also describes how to get the output values from the component once the component has finished running.</li>
@@ -94,19 +104,19 @@
 <p class="image-container"><img style="width: 624.00px" src="img/e817acae0c4e81ec.png"></p>
 <p>Below is a detailed list of tags recognized by Kale:</p>
 <table>
-<tr><td colspan="1" rowspan="1"><p>Imports</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Imports</strong></p>
 </td><td colspan="1" rowspan="1"><p>Code to be added at the beginning of every pipeline step. This is particularly useful with cells containing import statements</p>
 </td></tr>
-<tr><td colspan="1" rowspan="1"><p>Functions</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Functions</strong></p>
 </td><td colspan="1" rowspan="1"><p>Code to be added at the beginning of every pipeline step, but after import statements. This is particularly useful for functions or statements used in multiple pipeline steps</p>
 </td></tr>
-<tr><td colspan="1" rowspan="1"><p>Pipeline Parameters</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Pipeline Variables</strong></p>
 </td><td colspan="1" rowspan="1"><p>To be used in cells that contain just variable assignment of primitive types <code>int, str, float, bool</code>. These variables will be used as pipeline parameters, using the assigned values as defaults</p>
 </td></tr>
-<tr><td colspan="1" rowspan="1"><p>Pipeline Step</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Pipeline Step</strong></p>
 </td><td colspan="1" rowspan="1"><p>Assign the current cell to a pipeline step. If necessary, define a dependency of the current cell to other pipeline steps</p>
 </td></tr>
-<tr><td colspan="1" rowspan="1"><p>Skip Cells</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Skill Cells</strong></p>
 </td><td colspan="1" rowspan="1"><p>Do not include the code of the cell in the pipeline</p>
 </td></tr>
 </table>
@@ -115,7 +125,9 @@
 <p>Now go back to your notebook server and open the terminal. Entering the following commands to clone the prepared repository:</p>
 <pre>cd work 
 git clone https://github.com/idalab-de/kube-tutorial.git</pre>
-<p>Navigate to the following directory <code>work/kube-tutorial/pipeline</code>, open the prepared example notebook <code>analytics.ipynb</code>. </p>
+<p>Navigate to the following directory <code>work/kube-tutorial/pipeline</code>, open the prepared example notebook <code>analytics.ipynb</code>.  </p>
+<p>Click the blue bottom In the left-hand panel and click <code>Enable</code> to enable the Kale pipeline extension. To deploy a pipeline, you must select an <strong>experiment name</strong> (An experiment is a workspace where you can try different configurations of your pipelines) as well as define a <strong>pipeline name</strong>. You don&#39;t have to worry about the volumes since you&#39;ve already bound to your workspace volume.</p>
+<p class="image-container"><img style="width: 454.50px" src="img/90f93edc3499e354.png"></p>
 <p>Now you are all set, just follow the instructions there to get your first hands-on experience of Kubeflow pipeline. Have fun! 😎</p>
 
 
