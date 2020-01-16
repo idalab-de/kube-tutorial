@@ -25,7 +25,7 @@
                   id="your-first-kubeflow"
                   title="Your First Kubeflow Notebook at idalab"
                   environment="web"
-                  feedback-link="hong.zhu@idalab.de">
+                  feedback-link="feedback">
     
       <google-codelab-step label="Introduction" duration="0">
         <p class="image-container"><img style="width: 624.50px" src="img/2fe87d8e5ee387a0.png"></p>
@@ -45,9 +45,9 @@
       </google-codelab-step>
     
       <google-codelab-step label="Getting Started" duration="0">
-        <p>Magic Link: <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a> provides access to the Kubeflow central dashboard.</p>
-<p>If this is your first time to access the UI, you need to first create your personal namespace</p>
-<p><strong>firstname-lastname</strong>. The primary purpose of this functionality is to enable multiple users to operate on a shared Kubeflow deployment without stepping on each others&#39; jobs and resources. For more information see <a href="https://www.kubeflow.org/docs/other-guides/multi-user-overview/" target="_blank">https://www.kubeflow.org/docs/other-guides/multi-user-overview/</a></p>
+        <p>To begin, please click the link <a href="https://kubeflow.endpoints.idalab-kube.cloud.goog" target="_blank">kube.idalab.de</a>  to access the Kubeflow central dashboard.</p>
+<p>During the workshop, if you encounter any issues feel free to contact by clicking the <code>Report a mistake</code> at the bottom 😉. </p>
+<p>If this is your first time to access the UI, you need to first create your personal namespace in the forms of <strong>firstname-lastname</strong>. The primary purpose of this functionality is to enable multiple users to operate on a shared Kubeflow deployment without stepping on each others&#39; jobs and resources. For more information see <a href="https://www.kubeflow.org/docs/other-guides/multi-user-overview/" target="_blank">https://www.kubeflow.org/docs/other-guides/multi-user-overview/</a></p>
 <h2 is-upgraded>Managing Namespace Contributors </h2>
 <p>Kubeflow allows you to share your profiles with other users in the system. An owner of a profile can share access to their profile using the <strong>Manage Contributors</strong> tab available through the dashboard. </p>
 <p>Below is an example of the manage contributors tab view, to add and remove contributors is easily possible by simply adding/removing the user identifier (<strong>idalab user email address</strong>) in the <strong>Contributors</strong> to your namespace field. Once added, the Manage Contributors tab will show the profiles with their corresponding contributors listed. </p>
@@ -126,15 +126,17 @@
 <pre>cd work 
 git clone https://github.com/idalab-de/kube-tutorial.git</pre>
 <p>Navigate to the following directory <code>work/kube-tutorial/pipeline</code>, open the prepared example notebook <code>analytics.ipynb</code>.  </p>
-<p>Click the blue bottom In the left-hand panel and click <code>Enable</code> to enable the Kale pipeline extension. To deploy a pipeline, you must select an <strong>experiment name</strong> (An experiment is a workspace where you can try different configurations of your pipelines) as well as define a <strong>pipeline name</strong>. You don&#39;t have to worry about the volumes since you&#39;ve already bound to your workspace volume.</p>
+<p>Click the blue bottom In the left-hand panel and click <strong>Enable </strong>to enable the Kale pipeline extension. To deploy a pipeline, you must select an <strong>experiment name</strong> (An experiment is a workspace where you can try different configurations of your pipelines) as well as define a <strong>pipeline name</strong>. You don&#39;t have to worry about the volumes since you&#39;ve already bound to your workspace volume. Once the design work of your pipeline is done, simply click the <strong>COMPILE AND RUN</strong> bottom to submit your pipeline into pipeline UI. </p>
 <p class="image-container"><img style="width: 454.50px" src="img/90f93edc3499e354.png"></p>
+<p>Now you could explore the graph and other aspects of your run by clicking on the components of the graph and the other UI elements. The component <strong>Logs</strong> is quite useful for checking components&#39;s state, and component <strong>Artifacts</strong> can be used for visualizing the component&#39;s outputs. For example, if you have your result stored in GCS bucket in a csv format, you could give the bucket path as source and visualize it into a table. </p>
+<p class="image-container"><img style="width: 624.00px" src="img/512beef5107ea63b.png"></p>
 <p>Now you are all set, just follow the instructions there to get your first hands-on experience of Kubeflow pipeline. Have fun! 😎</p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Congratulations" duration="0">
-        <p>Your Feedback is very important to us to make it better: <a href="https://forms.gle/ARdrjNxesNnzhcgH8" target="_blank">https://forms.gle/ARdrjNxesNnzhcgH8</a></p>
+        <p>Your Feedback is very important to us to make it better: <a href="https://forms.gle/ARdrjNxesNnzhcgH8" target="_blank">https://forms.gle/ARdrjNxesNnzhcgH8</a> (anonym)</p>
 
 
       </google-codelab-step>
