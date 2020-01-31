@@ -134,8 +134,27 @@ git clone https://github.com/idalab-de/kube-tutorial.git</pre>
       </google-codelab-step>
     
       <google-codelab-step label="Congratulations" duration="0">
-        <p>Your Feedback is very important to us to make it better: <a href="https://forms.gle/ARdrjNxesNnzhcgH8" target="_blank">https://forms.gle/ARdrjNxesNnzhcgH8</a> (anonym)</p>
-<p><strong>Reading Materials:</strong></p>
+        <h2 is-upgraded>Updates from Last Time</h2>
+<p>We installed a new Jupyterlab extension <strong>@techrah/text-shortcuts</strong>, which supports text insertion in R kernel. At the moment we support the following shortcuts:<br></p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>%&gt;%</p>
+</td><td colspan="1" rowspan="1"><p>Accel Shift M</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>&lt;-</p>
+</td><td colspan="1" rowspan="1"><p>Alt -</p>
+</td></tr>
+</table>
+<p><br>You can test this new feature by entering the following commands in your terminal:</p>
+<pre>if [ ! -d .jupyter/lab/user-settings ]; then
+    mkdir -p .jupyter/lab/user-settings/@jupyterlab/shortcuts-extension
+    cp user-config/R-user/shortcuts.jupyterlab-settings .jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/.
+fi</pre>
+<p><br><br>Now refresh your browser, you can open your R kernel and test it. </p>
+<p>Another good news is you can do some basic <strong>debugging</strong> work in JupyterLab. For this, you need to use the <strong>xpython</strong> kernel instead of ipython. Simply click the bottom top of the right cornel to enable debugger and open the panel on the right, you can start with your debugging now! </p>
+<p class="image-container"><img style="width: 624.00px" src="img/c270047003e8a30c.png"></p>
+<h2 is-upgraded><br>Feedback</h2>
+<p>Your Feedback is very important to us to make it better: <a href="https://forms.gle/ARdrjNxesNnzhcgH8" target="_blank">https://forms.gle/ARdrjNxesNnzhcgH8</a> (anonym)</p>
+<h2 is-upgraded>Reading Materials:</h2>
 <ul>
 <li>Kubeflow documentation, what is Kubeflow? <a href="https://www.kubeflow.org/docs/about/kubeflow" target="_blank">https://www.kubeflow.org/docs/about/kubeflow</a></li>
 <li>Kubernetes basic concepts <a href="https://kubernetes.io/docs/concepts" target="_blank">https://kubernetes.io/docs/concepts</a> </li>
