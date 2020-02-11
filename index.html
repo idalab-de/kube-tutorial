@@ -134,15 +134,31 @@ git clone https://github.com/idalab-de/kube-tutorial.git</pre>
       </google-codelab-step>
     
       <google-codelab-step label="Discover More Features" duration="0">
-        <h2 is-upgraded>Connecting to Remote Databases<br></h2>
-<p>There is an installed <strong>sql GUI</strong> in the JupyterLab to enable you access and manipulate data easily and more efficiently. <br>In case we have a <strong>MySQL instance</strong> hosted in Google Cloud, which is accessible via the public IP <em>34.76.107.21</em> (you can ask the admin for more information about the instance), an user account with username<em> root</em> and password <em>Dancingbanana</em> is configured to access the instance. There is a database<em> web_log_test </em>stored in this instance, to connect to the database, you need to input a connection string like this:<br></p>
+        <p>We have been working on improving user experiments of using idalab customized Jupyter IDE. Just take your time to explore the features embedded in your Jupyter server. ⛱</p>
+        <p class="image-container"><img style="width: 624.50px" src="img/theme.gif"></p>
+<h2 is-upgraded>Connecting to Remote Databases<br></h2>
+<p>There is an installed <strong>sql GUI</strong> in the JupyterLab to enable you access and manipulate data easily and more efficiently. It helps you <br></p>
+<ul>
+<li>Explore your tables with a point-and-click interface (press <code>enter</code>)</li>
+<li>Read and modify your database with custom queries (press <code>shift + enter</code>)</li>
+</ul>
+<p><br>In case we have a <strong>MySQL instance</strong> hosted in Google Cloud, which is accessible via the public IP <em>34.76.107.21</em> (you can ask the admin for more information about the instance), an user account with username<em> root</em> and password <em>Dancingbanana</em> is configured to access the instance. There is a database<em> web_log_test </em>stored in this instance, to connect to the database, you need to input a connection string like this:<br></p>
 <pre>[engine]://[user]:[password]@[host]/[database]</pre>
-<p><br>Which is, in our case:<br></p>
+<p><br>Which is, in our case:</p>
 <pre>mysql+pymysql://root:Dancingbanana@34.76.107.21/web_log_test</pre>
-<p class="image-container"><img style="width: 624.00px" src="img/sql.gif"></p>
-<h2 is-upgraded><br>Debugging Code in a Notebook</h2>
+<p class="image-container"><img style="width: 624.50px" src="img/sql.gif"></p>
+<h2 is-upgraded>Debugging Code in a Notebook</h2>
 <p>Another good news is you can do some basic <strong>debugging</strong> work in JupyterLab. For this, you need to use the <strong>xpython</strong> kernel instead of ipython. Simply click the bottom top of the right cornel to enable debugger and open the panel on the right, you can start with your debugging now! </p>
-<p class="image-container"><img style="width: 1200.00px" src="img/debugger.gif"></p>
+<p class="image-container"><img style="width: 624.50px" src="img/debugger.gif"></p>
+<h2 is-upgraded>Using Cloud Storage FUSE</h2>
+<p>Cloud Storage FUSE is an open source <a href="http://fuse.sourceforge.net/" target="_blank">FUSE</a> adapter that allows you to mount Cloud Storage buckets as file systems on your operating system. It also provides a way for the notebook user to interact with storage buckets, upload and download storage objects using standard file system semantics. <br></p>
+<p>If you have an existing GCS bucket that you want to mount to your notebook server, please contact the admin first to trigger your notebook with this functionality. (Auto-enabling is currently still under process).<br></p>
+<p>After this, you can open your terminal and enter the following command to invoke gcsfuse:</p>
+<pre>gcsfuse --implicit-dirs bucket-name /path/to/mount</pre>
+<p class="image-container"><img style="width: 624.50px" src="img/gcs.gif"></p>
+<p><strong>Caution</strong>: once mounting is invoked, all actions would be bidirectional. Therefore you should be very cautious of actions like deleting objects.  </p>
+<p>To unmount for a fuse file system on your operating system:</p>
+<pre>fusermount -u /path/to/mount </pre>
 <h2 is-upgraded>Text Shortcuts for R Kernel</h2>
 <p>We installed a new Jupyterlab extension <strong>@techrah/text-shortcuts</strong>, which supports text insertion in R kernel. Currently we support the following shortcuts, which you could test in your R notebook:<br> </p>
 <table>
